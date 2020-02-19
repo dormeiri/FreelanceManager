@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dataaccess\DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\Bills\AddBo;;.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\Bills\BillsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\WorkTimeRanges\TimeRangesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\WorkTasks\AddWorkTasks.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\WorkTasks\WorkTasksView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="View\Bills\AddBo;;.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\Bills\BillsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\WorkTimeRanges\TimeRangesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\WorkTasks\AddWorkTasks.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\WorkTasks\WorkTasksView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>
