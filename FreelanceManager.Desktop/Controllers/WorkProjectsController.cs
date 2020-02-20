@@ -22,6 +22,7 @@ namespace FreelanceManager.Desktop.Controllers
         {
             var controller = new WorkTasksController(_ctx, id);
 
+            controller.BlazeAdded += TriggerBlazeAddedEvent;
             controller.ListChanged += () => RelatedListChanged?.Invoke();
             controller.RelatedListChanged += () => RelatedListChanged?.Invoke();
 

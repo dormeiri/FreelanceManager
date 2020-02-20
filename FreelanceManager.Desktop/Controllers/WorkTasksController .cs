@@ -27,6 +27,7 @@ namespace FreelanceManager.Desktop.Controllers
         {
             var controller = new WorkTimeRangesController(_ctx, id);
 
+            controller.BlazeAdded += TriggerBlazeAddedEvent;
             controller.ListChanged += () => RelatedListChanged?.Invoke();
 
             return new WorkTimeRangesView(controller);

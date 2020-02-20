@@ -1,5 +1,6 @@
 ﻿using FreelanceManager.Desktop.Controllers;
 using FreelanceManager.Desktop.Models;
+using FreelanceManager.Desktop.View.WorkTasks;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,13 +21,13 @@ namespace FreelanceManager.Desktop.View.WorkProjects
 
         }
 
-        public WorkProjectsView(
-            WorkProjectsController workProjectsController) : this()
+        public WorkProjectsView(WorkProjectsController controller) : this()
         {
-            _controller = workProjectsController;
+            _controller = controller;
 
             _controller.ListChanged += ListChanged;
             _controller.RelatedListChanged += RelatedListChanged;
+            MainFrame.ContentRendered += (s,o) => _controller.TriggerBlazeAddedEvent();
 
             ListChanged();
         }
@@ -64,9 +65,19 @@ namespace FreelanceManager.Desktop.View.WorkProjects
         {
             var selected = GetSelected();
 
-            MainFrame.Content = selected != null
-                ? _controller.GetWorkTasksView(selected.Id)
-                : null;
+            WorkTasksView uc;
+
+            if (selected != null)
+            {
+                uc = _controller.GetWorkTasksView(selected.Id);
+                uc.Done += () => MainListView.SelectedIndex = -1;
+            }
+            else
+            {
+                uc = null;
+            }
+
+            MainFrame.Content = uc;
         }
 
         private WorkProjectDto GetSelected()
@@ -77,6 +88,11 @@ namespace FreelanceManager.Desktop.View.WorkProjects
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
             _controller.ExportReport();
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            Done?.Invoke();
         }
     }
 }

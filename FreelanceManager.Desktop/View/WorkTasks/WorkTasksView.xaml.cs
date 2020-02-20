@@ -1,5 +1,6 @@
 ﻿using FreelanceManager.Desktop.Controllers;
 using FreelanceManager.Desktop.Models;
+using FreelanceManager.Desktop.View.WorkTimeRanges;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +29,7 @@ namespace FreelanceManager.Desktop.View.WorkTasks
 
             _controller.ListChanged += ListChanged;
             _controller.RelatedListChanged += RelatedListChanged;
+            MainFrame.ContentRendered += (s, o) => _controller.TriggerBlazeAddedEvent();
 
             ListChanged();
 
@@ -71,9 +73,19 @@ namespace FreelanceManager.Desktop.View.WorkTasks
         {
             var selected = GetSelected();
 
-            MainFrame.Content = selected == null
-                ? null
-                : _controller.GetWorkTimeRangesView(selected.Id);
+            WorkTimeRangesView uc;
+
+            if (selected != null)
+            {
+                uc = _controller.GetWorkTimeRangesView(selected.Id);
+                uc.Done += () => MainListView.SelectedIndex = -1;
+            }
+            else
+            {
+                uc = null;
+            }
+
+            MainFrame.Content = uc;
         }
 
         private WorkTaskDto GetSelected()
@@ -95,6 +107,11 @@ namespace FreelanceManager.Desktop.View.WorkTasks
         {
             return string.IsNullOrWhiteSpace(TbFilter.Text) 
                 || ((WorkTaskDto)x).Name.ToLower().StartsWith(TbFilter.Text.ToLower());
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            Done?.Invoke();
         }
     }
 }

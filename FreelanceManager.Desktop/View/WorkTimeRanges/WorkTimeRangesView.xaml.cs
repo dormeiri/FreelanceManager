@@ -25,6 +25,7 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
             LabelTask.Content = _controller.GetWorkTaskContext().Name;
 
             _controller.ListChanged += ListChanged;
+            MainFrame.ContentRendered += (s, o) => _controller.TriggerBlazeAddedEvent();
 
             ListChanged();
         }
@@ -60,6 +61,11 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
         private void ReleaseFrame()
         {
             MainFrame.Content = null;
+        }
+
+        private void BtnBack_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Done?.Invoke();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace FreelanceManager.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const int HIDDEN_SIDEBAR_SIZE = 20;
+        private const int HIDDEN_SIDEBAR_SIZE = 30;
 
         private readonly Dictionary<ButtonSidebar, Action> sidebarButtons;
 
@@ -34,7 +34,10 @@ namespace FreelanceManager.Desktop
 
             OpenProjects();
             BtnProjects.Toggle(true);
+        }
 
+        public void ScrollRight()
+        {
 
         }
 
@@ -65,13 +68,21 @@ namespace FreelanceManager.Desktop
 
         private void OpenProjects()
         {
+            //TODO: Move to controller
+            
             var projectsController = new WorkProjectsController(_ctx);
 
-            FrameOpt.Content = new WorkProjectsView(projectsController);
+            var uc = new WorkProjectsView(projectsController);
+
+            projectsController.BlazeAdded += () => MainScrollViewer.ScrollToRightEnd();
+
+            FrameOpt.Content = uc;
         }
 
         private void OpenBills()
         {
+            //TOOD: Move to controller
+
             var billsController = new BillsController(_ctx);
             billsController.BillLoaded += BillLoaded;
 
@@ -107,6 +118,7 @@ namespace FreelanceManager.Desktop
 
         private void SetSidebarTextVisibility(Visibility visibility)
         {
+            MainTitle.Opacity = visibility == Visibility.Visible ? 1 : 0.25;
             foreach (var b in sidebarButtons)
             {
                 b.Key.TextVisibility = visibility;
