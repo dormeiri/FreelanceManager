@@ -9,6 +9,7 @@ namespace FreelanceManager.Desktop.Models
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public int WorkTaskId { get; set; }
+        public double TotalHours => (End - Start).TotalHours;
 
         public DateTime StartDate
         {
@@ -82,7 +83,7 @@ namespace FreelanceManager.Desktop.Models
 
         public override string ToString()
         {
-            return $"{Id}, {Start}, {End}";
+            return $"{Id}, {Start}, {End}, {TotalHours}";
         }
     }
 }

@@ -7,20 +7,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Name="MainStackPanel">
         <Label Style="{StaticResource H2}">Add Time Range</Label>
-        <Label>Start</Label>
+        <Label Style="{StaticResource LabelInput}">Task ID</Label>
+        <TextBox IsEnabled="False" Name="TbTaskId" Text="{Binding Path=WorkTaskId, Mode=TwoWay}"/>
+        <Label Style="{StaticResource LabelInput}">Start</Label>
         <StackPanel Orientation="Horizontal">
-            <DatePicker SelectedDate="{Binding Path=StartDate, Mode=TwoWay}"/>
-            <TextBox Text="{Binding Path=StartHour, Mode=TwoWay}"/>
+            <DatePicker Name="DpStart" SelectedDate="{Binding Path=StartDate, Mode=TwoWay}"/>
+            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=StartHour, Mode=TwoWay}"/>
         </StackPanel>
+        <Label Style="{StaticResource LabelInput}">End</Label>
         <StackPanel Orientation="Horizontal">
             <DatePicker SelectedDate="{Binding Path=EndDate, Mode=TwoWay}"/>
-            <TextBox Text="{Binding Path=EndHour, Mode=TwoWay}"/>
+            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=EndHour, Mode=TwoWay}"/>
         </StackPanel>
-        <Label>Task ID</Label>
-        <TextBox IsEnabled="False" Name="TbTaskId" Text="{Binding Path=WorkTaskId, Mode=TwoWay}"/>
-        <StackPanel Orientation="Horizontal">
-            <Button Name="BtnSave" Click="BtnSave_Click">Save</Button>
-            <Button Name="BtnCancel" Click="BtnCancel_Click">Cancel</Button>
+        <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
+            <Button Name="BtnSave" Click="BtnSave_Click" Style="{StaticResource HButtons}">Save</Button>
+            <Button IsDefault="True" Name="BtnCancel" Click="BtnCancel_Click" Style="{StaticResource HButtons}">Cancel</Button>
         </StackPanel>
     </StackPanel>
 </UserControl>

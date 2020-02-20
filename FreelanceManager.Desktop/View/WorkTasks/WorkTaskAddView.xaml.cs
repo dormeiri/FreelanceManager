@@ -4,27 +4,29 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace FreelanceManager.Desktop.View.WorkProjects
+namespace FreelanceManager.Desktop.View.WorkTasks
 {
     /// <summary>
     /// Interaction logic for AddProject.xaml
     /// </summary>
-    public partial class AddWorkProject : UserControl
+    public partial class WorkTaskAddView : UserControl
     {
         public Action Done;
+        private readonly WorkTasksController _controller;
 
-        private readonly WorkProjectsController _controller;
+        public WorkTaskDto Entity { get; set; }
 
-        public WorkProjectDto Entity { get; set; }
-
-        public AddWorkProject()
+        public WorkTaskAddView()
         {
             InitializeComponent();
+
+            TbName.Focus();
         }
 
-        public AddWorkProject(WorkProjectsController controller) : this()
+        public WorkTaskAddView(WorkTasksController controller, WorkTaskDto entity) : this()
         {
-            Entity = new WorkProjectDto();
+            Entity = entity;
+
             _controller = controller;
 
             MainStackPanel.DataContext = Entity;

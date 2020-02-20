@@ -4,15 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FreelanceManager.Desktop.View.WorkTasks"
+             xmlns:converters="clr-namespace:FreelanceManager.Desktop.View.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <Label Style="{StaticResource H1}">Tasks</Label>
-        <ListView Name="MainListView" SelectionChanged="MainListView_SelectionChanged"></ListView>
-        <StackPanel Orientation="Horizontal">
-            <Button Name="BtnAdd" Click="BtnAdd_Click">Add</Button>
-            <Button Name="BtnRemove" Click="BtnRemove_Click">Remove</Button>
+    <UserControl.Resources>
+        <converters:IsSelectedConverter x:Key="IsSelectedConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <Label Style="{StaticResource H1}">Tasks</Label>
+            <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
+                <Button Name="BtnExport" Click="BtnExport_Click" Style="{StaticResource HButtons}">Export</Button>
+                <Button Name="BtnAdd" Click="BtnAdd_Click" Style="{StaticResource HButtons}">Add</Button>
+                <Button Name="BtnRemove" Click="BtnRemove_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}" Style="{StaticResource HButtons}">Remove</Button>
+            </StackPanel>
+            <StackPanel Margin="{StaticResource VMargin}">
+                <TextBox x:Name="TbFilter" TextChanged="TbFilter_TextChanged"></TextBox>
+            </StackPanel>
+            <ListView Margin="{StaticResource VMargin}" Name="MainListView" SelectionChanged="MainListView_SelectionChanged">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Id"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding TotalHours}" Header="Total Hours"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Label Name="LabelHours" Style="{StaticResource LabelTotal}">0</Label>
         </StackPanel>
-        <Frame Name="MainFrame"></Frame>
-    </StackPanel>
+        <Frame Grid.Column="2" Name="MainFrame"></Frame>
+    </Grid>
 </UserControl>

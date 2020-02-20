@@ -6,6 +6,7 @@ namespace FreelanceManager.Desktop.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public double TotalHours { get; set; }
 
         public int WorkProjectId { get; set; }
 
@@ -29,7 +30,7 @@ namespace FreelanceManager.Desktop.Models
 
         public override string ToString()
         {
-            return $"{Id} {Name}";
+            return $"{Id}, {Name}, {TotalHours}";
         }
     }
 }

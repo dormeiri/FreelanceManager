@@ -39,6 +39,11 @@ namespace DataAccess.Entities
             return _records.Values;
         }
 
+        public bool IsExist(int id)
+        {
+            return _records.ContainsKey(id);
+        }
+
         public T Find(int id)
         {
             return _records[id];

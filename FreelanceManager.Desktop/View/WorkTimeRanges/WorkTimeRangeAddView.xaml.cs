@@ -19,23 +19,12 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
         {
             InitializeComponent();
 
-
+            DpStart.Focus();
         }
 
-        public WorkTimeRangeAddView(WorkTimeRangesController controller, int workTaskId) : this()
+        public WorkTimeRangeAddView(WorkTimeRangesController controller, WorkTimeRangeDto entity) : this()
         {
-            var now = DateTime.Now;
-            now = now.Date.AddHours(now.Hour);
-
-            var start = now.AddHours(-1);
-            var end = now;
-
-            Entity = new WorkTimeRangeDto()
-            {
-                Start = start,
-                End = end,
-                WorkTaskId = workTaskId
-            };
+            Entity = entity;
 
             _controller = controller;
 

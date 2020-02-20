@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dataaccess\DataAccess.csproj" />
+    <ProjectReference Include="..\FreelanceManager.Reports\FreelanceManager.Reports.csproj" />
+    <ProjectReference Include="..\Statistics\Statistics.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,10 +19,10 @@
     <Compile Update="View\Bills\BillsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WorkTimeRanges\TimeRangesView.xaml.cs">
+    <Compile Update="View\WorkTimeRanges\WorkTimeRangesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\WorkTasks\AddWorkTasks.xaml.cs">
+    <Compile Update="View\WorkTasks\WorkTaskAddView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\WorkTasks\WorkTasksView.xaml.cs">
@@ -35,10 +37,10 @@
     <Page Update="View\Bills\BillsView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WorkTimeRanges\TimeRangesView.xaml">
+    <Page Update="View\WorkTimeRanges\WorkTimeRangesView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\WorkTasks\AddWorkTasks.xaml">
+    <Page Update="View\WorkTasks\WorkTaskAddView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\WorkTasks\WorkTasksView.xaml">

@@ -11,32 +11,31 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
     public partial class WorkTimeRangesView : UserControl
     {
         public Action Done;
-        private readonly int _workTaskId;
-        private readonly WorkTimeRangesController _controller;
+        private readonly WorkTimeRangesController _workTimeRangesController;
 
         public WorkTimeRangesView()
         {
             InitializeComponent();
         }
 
-        public WorkTimeRangesView(WorkTimeRangesController controller, int workTaskId) : this()
+        public WorkTimeRangesView(WorkTimeRangesController workTimeRangesController) : this()
         {
-            _workTaskId = workTaskId;
-            _controller = controller;
+            _workTimeRangesController = workTimeRangesController;
 
-            _controller.ListChanged += ListChanged;
+            _workTimeRangesController.ListChanged += ListChanged;
 
             ListChanged();
         }
 
         private void ListChanged()
         {
-            MainListView.ItemsSource = _controller.Get(_workTaskId);
+            MainListView.ItemsSource = _workTimeRangesController.Get();
+            LabelHours.Content = _workTimeRangesController.GetTotalHours();
         }
 
         private void BtnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var uc = new WorkTimeRangeAddView(_controller, _workTaskId);
+            var uc = _workTimeRangesController.GetAddView();
             uc.Done += ReleaseFrame;
 
             MainFrame.Content = uc;
@@ -47,13 +46,13 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
             var selected = GetSelected();
             if (selected != null)
             {
-                _controller.Remove(selected.Id);
+                _workTimeRangesController.Remove(selected.Id);
             }
         }
 
-        private BillDto GetSelected()
+        private WorkTimeRangeDto GetSelected()
         {
-            return MainListView.SelectedItem != null ? (BillDto)MainListView.SelectedItem : null;
+            return MainListView.SelectedItem != null ? (WorkTimeRangeDto)MainListView.SelectedItem : null;
         }
 
         private void ReleaseFrame()

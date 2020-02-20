@@ -1,6 +1,5 @@
 ﻿using FreelanceManager.Desktop.Controllers;
 using FreelanceManager.Desktop.Models;
-using FreelanceManager.Desktop.View.WorkTasks;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,9 +12,7 @@ namespace FreelanceManager.Desktop.View.WorkProjects
     public partial class WorkProjectsView : UserControl
     {
         public Action Done;
-        private readonly WorkProjectsController _projectsController;
-        private readonly WorkTasksController _tasksController;
-        private readonly WorkTimeRangesController _workTimeRangesController;
+        private readonly WorkProjectsController _controller;
 
         public WorkProjectsView()
         {
@@ -24,59 +21,62 @@ namespace FreelanceManager.Desktop.View.WorkProjects
         }
 
         public WorkProjectsView(
-            WorkProjectsController projectsController, 
-            WorkTasksController tasksController, 
-            WorkTimeRangesController workTimeRangesController) : this()
+            WorkProjectsController workProjectsController) : this()
         {
-            _projectsController = projectsController;
-            _tasksController = tasksController;
-            _workTimeRangesController = workTimeRangesController;
+            _controller = workProjectsController;
 
-            _projectsController.ListChanged += ListChanged;
+            _controller.ListChanged += ListChanged;
+            _controller.RelatedListChanged += RelatedListChanged;
 
             ListChanged();
         }
 
         private void ListChanged()
         {
-            MainListView.ItemsSource = _projectsController.Get();
+            MainListView.ItemsSource = _controller.Get();
+            RelatedListChanged();
+        }
+
+        private void RelatedListChanged()
+        {
+            LabelHours.Content = _controller.GetTotalHours();
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            var uc = new AddWorkProject(_projectsController);
-            uc.Done += ReleaseFrame;
+            var uc = _controller.GetAddView();
+            uc.Done += SetMainFrame;
 
             MainFrame.Content = uc;
         }
 
         private void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
-            _projectsController.Remove(GetSelected().Id);
+            _controller.Remove(GetSelected().Id);
         }
 
         private void MainListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowTasksView();
+            SetMainFrame();
         }
 
-        private void ReleaseFrame()
-        {
-            MainFrame.Content = null;
-        }
-
-        private void ShowTasksView()
+        private void SetMainFrame()
         {
             var selected = GetSelected();
 
             MainFrame.Content = selected != null
-                ? new WorkTasksView(_tasksController, _workTimeRangesController, selected.Id)
+                ? _controller.GetWorkTasksView(selected.Id)
                 : null;
         }
 
         private WorkProjectDto GetSelected()
         {
             return (WorkProjectDto)MainListView.SelectedItem;
+        }
+
+        private void BtnExport_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.ExportReport();
         }
     }
 }

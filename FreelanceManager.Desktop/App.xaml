@@ -4,17 +4,209 @@
              xmlns:local="clr-namespace:FreelanceManager.Desktop"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style TargetType="Frame">
-            <Setter Property="NavigationUIVisibility" Value="Hidden"></Setter>
+        <Thickness x:Key="HMargin" Left="0" Top="0" Right="10" Bottom="0"/>
+        <Thickness x:Key="VMargin" Left="0" Top="10" Right="0" Bottom="0"/>
+        <SolidColorBrush x:Key="Color1" Color="#f6f7eb"/>
+        <SolidColorBrush x:Key="Color2" Color="#393e41"/>
+        <SolidColorBrush x:Key="Color2Dark" Color="#2a2e30"/>
+        <SolidColorBrush x:Key="Color3" Color="#3f88c5"/>
+        <SolidColorBrush x:Key="Color3Dark" Color="#2e6390"/>
+        <SolidColorBrush x:Key="Color4" Color="#55c1ac"/>
+        <SolidColorBrush x:Key="Color4Dark" Color="#3e8d7e"/>
+        <SolidColorBrush x:Key="Color5" Color="#e94f37"/>
+
+        <Style TargetType="Control" x:Key="Base">
+            <Setter Property="Foreground" Value="{StaticResource Color1}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
         </Style>
-        <Style TargetType="TextBox" x:Key="TimePart">
-            <Setter Property="Width" Value="50"></Setter>
+        
+        
+        <!--Frame-->
+
+        <Style x:Key="BaseFrame" TargetType="Frame">
+            <Setter Property="NavigationUIVisibility" Value="Hidden"/>
         </Style>
-        <Style TargetType="Label" x:Key="H1">
-            <Setter Property="FontSize" Value="24"></Setter>
+
+        <Style TargetType="Frame" BasedOn="{StaticResource BaseFrame}"/>
+
+        
+        <!--Label-->
+
+        <Style TargetType="Label" BasedOn="{StaticResource Base}"/>
+
+        <Style x:Key="LabelInput" TargetType="Label" BasedOn="{StaticResource Base}" >
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="{StaticResource VMargin}"/>
         </Style>
-        <Style TargetType="Label" x:Key="H2">
-            <Setter Property="FontSize" Value="18"></Setter>
+
+        <Style x:Key="H1" TargetType="Label" BasedOn="{StaticResource Base}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Foreground" Value="{StaticResource Color4}"/>
+        </Style>
+
+        <Style x:Key="H2" TargetType="Label" BasedOn="{StaticResource Base}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="{StaticResource Color4}"/>
+        </Style>
+
+        <Style x:Key="LabelTotal" TargetType="Label" BasedOn="{StaticResource Base}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Label">
+                        <Border Padding="{TemplateBinding Padding}">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Margin="{StaticResource HMargin}" Fill="{StaticResource Color5}" Height="Auto" Width="2"/>
+                                    <Label FontWeight="Normal" Foreground="{TemplateBinding Foreground}">Total</Label>
+                                </StackPanel>
+                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!--Date Picker-->
+        <Style TargetType="DatePicker">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        
+        <!--Text Box-->
+
+        <Style x:Key="BaseTextBox" TargetType="TextBox" BasedOn="{StaticResource Base}">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Color4Dark}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="SelectionBrush" Value="{StaticResource Color4}"/>
+            <Setter Property="CaretBrush" Value="{StaticResource Color1}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Padding="5" MinWidth="100">
+                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Color4}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}"/>
+
+        <Style x:Key="TextBoxTimePart" TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
+            <Setter Property="MinWidth" Value="40"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+
+        <!--List View-->
+
+        <Style TargetType="ListView" BasedOn="{StaticResource Base}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style TargetType="ListViewItem" BasedOn="{StaticResource Base}">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border SnapsToDevicePixels="True" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="0,5" Margin="2,0">
+                            <GridViewRowPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Content="{TemplateBinding Content}" Columns="{TemplateBinding GridView.ColumnCollection}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Color4Dark}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource Color4Dark}" />
+                                <Setter Property="Background" Value="{StaticResource Color4Dark}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource Base}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GridViewColumnHeader">
+                        <Border SnapsToDevicePixels="True" BorderThickness="0" Background="{TemplateBinding Background}" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="GridViewHeaderRowPresenter">
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+
+
+        <!--Button-->
+
+        <Style x:Key="BaseButton" TargetType="Button" BasedOn="{StaticResource Base}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="{StaticResource Color2Dark}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border SnapsToDevicePixels="True" BorderThickness="0" Background="{TemplateBinding Background}" Padding="10,5">
+                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Color4Dark}" />
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Color4}" />
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
+
+        <Style x:Key="SidebarButtonIn" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background" Value="{StaticResource Color2}"/>
+        </Style>
+
+        <Style x:Key="SidebarButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background" Value="{StaticResource Color2Dark}"/>
+        </Style>
+
+        <Style x:Key="HButtons" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Margin" Value="{StaticResource HMargin}"/>
         </Style>
     </Application.Resources>
 </Application>

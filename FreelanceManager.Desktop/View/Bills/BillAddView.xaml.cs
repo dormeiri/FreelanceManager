@@ -18,22 +18,11 @@ namespace FreelanceManager.Desktop.View.Bills
         public BillAddView()
         {
             InitializeComponent();
-
-
         }
 
-        public BillAddView(BillsController controller) : this()
+        public BillAddView(BillsController controller, BillDto entity) : this()
         {
-            var now = DateTime.Now;
-
-            var start = new DateTime(now.Year, now.Month, 1);
-            var end = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
-
-            Entity = new BillDto()
-            {
-                Start = start,
-                End = end
-            };
+            Entity = entity;
 
             _controller = controller;
 

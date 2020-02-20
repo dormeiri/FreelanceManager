@@ -15,30 +15,53 @@ namespace Statistics
 
         public double GetTotalHours()
         {
-            return _ctx.WorkTimeRanges.AsEnumerable().Sum(x => (x.End - x.Start).TotalHours);
+            return _ctx.WorkTimeRanges?.AsEnumerable().Sum(x => (x.End - x.Start).TotalHours)
+                ?? 0;
         }
 
-        public Dictionary<int, double> GetTotalHoursByTasks()
+        public double GetTotalHoursOfProject(int id)
         {
-            var groups = _ctx.WorkTasks.AsEnumerable().ToDictionary(x => x.Id, x => 0D);
+            return _ctx.WorkTimeRanges?.AsEnumerable()
+                .Where(x => _ctx.WorkTasks.Find(x.WorkTaskId).WorkProjectId == id)
+                .Sum(x => (x.End - x.Start).TotalHours)
+                ?? 0;
+        }
 
-            foreach (var x in _ctx.WorkTimeRanges.AsEnumerable())
-            {
-                groups[x.WorkTaskId] += (x.End - x.Start).TotalHours;
-            }
-
-            return groups;
+        public double GetTotalHoursOfTask(int id)
+        {
+            return _ctx.WorkTimeRanges?.AsEnumerable()
+                .Where(x => x.WorkTaskId == id)
+                .Sum(x => (x.End - x.Start).TotalHours)
+                ?? 0;
         }
 
         public Dictionary<int, double> GetTotalHoursByProject()
         {
             var groups = _ctx.WorkProjects.AsEnumerable().ToDictionary(x => x.Id, x => 0D);
 
-            foreach (var x in _ctx.WorkTimeRanges.AsEnumerable())
+            if (_ctx.WorkTimeRanges != null)
             {
-                var task = _ctx.WorkTasks.Find(x.WorkTaskId);
+                foreach (var x in _ctx.WorkTimeRanges.AsEnumerable())
+                {
+                    var task = _ctx.WorkTasks.Find(x.WorkTaskId);
 
-                groups[task.WorkProjectId] += (x.End - x.Start).TotalHours;
+                    groups[task.WorkProjectId] += (x.End - x.Start).TotalHours;
+                }
+            }
+
+            return groups;
+        }
+
+        public Dictionary<int, double> GetTotalHoursByTasks()
+        {
+            var groups = _ctx.WorkTasks.AsEnumerable().ToDictionary(x => x.Id, x => 0D);
+
+            if (_ctx.WorkTimeRanges != null)
+            {
+                foreach (var x in _ctx.WorkTimeRanges.AsEnumerable())
+                {
+                    groups[x.WorkTaskId] += (x.End - x.Start).TotalHours;
+                }
             }
 
             return groups;

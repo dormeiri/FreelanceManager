@@ -1,6 +1,8 @@
 ﻿using DataAccess;
 using DataAccess.Models;
 using FreelanceManager.Desktop.Models;
+using FreelanceManager.Desktop.View.Bills;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +17,19 @@ namespace FreelanceManager.Desktop.Controllers
         public event BillLoadedEventHandler BillLoaded;
 
         public BillsController(Context ctx) : base(ctx) { }
+
+        public BillAddView GetAddView()
+        {
+            var now = DateTime.Now;
+
+            var entity = new BillDto()
+            {
+                Start = new DateTime(now.Year, now.Month, 1),
+                End = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month))
+            };
+
+            return new BillAddView(this, entity);
+        }
 
         public ICollection<BillDto> Get()
         {
@@ -44,6 +59,8 @@ namespace FreelanceManager.Desktop.Controllers
             ListChanged?.Invoke();
 
             _ctx.Save();
+
+            BillLoaded?.Invoke();
         }
 
         public void LoadBill(int id)

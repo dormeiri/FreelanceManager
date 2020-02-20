@@ -3,24 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FreelanceManager.Desktop"
+        xmlns:uc="clr-namespace:FreelanceManager.Desktop.View.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" 
+        Width="1000"
+        Height="500"
+        Background="{StaticResource Color2}">
+    <Window.Resources>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Column="0">
-            <StackPanel Orientation="Horizontal">
-                <Label>Loaded Bill: </Label>
+
+        <DockPanel LastChildFill="False" Grid.Column="0" Background="{StaticResource Color2Dark}">
+            <StackPanel DockPanel.Dock="Top">
+                <uc:ButtonSidebar x:Name="BtnProjects" Text="Projects"/>
+                <uc:ButtonSidebar x:Name="BtnBills" Text="Bills"/>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                <Label>Bill:</Label>
                 <Label Name="LabelLoadedBill"></Label>
             </StackPanel>
-            <Button Name="BtnProjects" Click="BtnAddProject_Click">Projects</Button>
-            <Button Name="BtnBills" Click="BtnBills_Click">Bills</Button>
-        </StackPanel>
-        
-        <Frame Name="FrameOpt" Grid.Column="1"/>
+        </DockPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="2">
+            <Frame Name="FrameOpt"/>
+        </ScrollViewer>
     </Grid>
 </Window>

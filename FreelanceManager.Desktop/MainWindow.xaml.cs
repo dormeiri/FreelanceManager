@@ -1,7 +1,10 @@
 ﻿using DataAccess;
 using FreelanceManager.Desktop.Controllers;
 using FreelanceManager.Desktop.View.Bills;
+using FreelanceManager.Desktop.View.UserControls;
 using FreelanceManager.Desktop.View.WorkProjects;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace FreelanceManager.Desktop
@@ -11,38 +14,56 @@ namespace FreelanceManager.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Dictionary<ButtonSidebar, Action> sidebarButtons;
+
         private readonly Context _ctx;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            sidebarButtons = GetSidebarButtons();
+
             _ctx = ContextProducer.Ctx.Value;
 
-            BillLoaded();
             OpenProjects();
+            BillLoaded();
+
         }
 
-
-        private void BtnAddProject_Click(object sender, RoutedEventArgs e)
+        private Dictionary<ButtonSidebar, Action> GetSidebarButtons()
         {
-            OpenProjects();
+            var result = new Dictionary<ButtonSidebar, Action>()
+            {
+                { BtnProjects, OpenProjects },
+                { BtnBills, OpenBills }
+            };
+
+            foreach (var b in result)
+            {
+                b.Key.Click += SidebarButtonClicked;
+                b.Key.ClickAction = b.Value;
+            }
+
+            return result;
+        }
+
+        private void SidebarButtonClicked(ButtonSidebar obj)
+        {
+            foreach(var b in sidebarButtons.Keys)
+            {
+                b.Toggle(false);
+            }
         }
 
         private void OpenProjects()
         {
             var projectsController = new WorkProjectsController(_ctx);
-            var tasksController = new WorkTasksController(_ctx);
-            var workTimeRangesController = new WorkTimeRangesController(_ctx);
 
-            FrameOpt.Content = new WorkProjectsView(
-                projectsController,
-                tasksController,
-                workTimeRangesController
-            );
+            FrameOpt.Content = new WorkProjectsView(projectsController);
         }
 
-        private void BtnBills_Click(object sender, RoutedEventArgs e)
+        private void OpenBills()
         {
             var billsController = new BillsController(_ctx);
             billsController.BillLoaded += BillLoaded;

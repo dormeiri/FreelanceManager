@@ -35,7 +35,7 @@ namespace FreelanceManager.Desktop.View.Bills
 
         private void BtnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var uc = new BillAddView(_controller);
+            var uc = _controller.GetAddView();
             uc.Done += ReleaseFrame;
 
             MainFrame.Content = uc;

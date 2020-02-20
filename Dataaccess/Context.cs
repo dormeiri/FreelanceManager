@@ -41,6 +41,34 @@ namespace DataAccess
             WorkTasks.Save();
             Bills.Save();
             WorkTimeRanges?.Save();
+
+            if (Bill == null || !Bills.IsExist(Bill.Id))
+            {
+                LoadLastBill();
+            }
+        }
+
+        private void Load()
+        {
+            WorkProjects.Load();
+            WorkTasks.Load();
+            Bills.Load();
+            LoadLastBill();
+        }
+
+        private void LoadLastBill()
+        {
+            if (Bills.AsEnumerable().Any())
+            {
+                var m = Bills.AsEnumerable().Max(x => x.Id);
+                var bill = Bills.AsEnumerable().First(x => x.Id == m);
+
+                LoadBill(bill);
+            }
+            else
+            {
+                Bill = null;
+            }
         }
 
         public void LoadBill(int id)
@@ -61,25 +89,6 @@ namespace DataAccess
         private string GetPath(string filename)
         {
             return Path.Combine(Directory, filename);
-        }
-
-        private void Load()
-        {
-            WorkProjects.Load();
-            WorkTasks.Load();
-            Bills.Load();
-            LoadLastBill();
-        }
-
-        private void LoadLastBill()
-        {
-            if (Bills.AsEnumerable().Any())
-            {
-                var m = Bills.AsEnumerable().Max(x => x.Id);
-                var bill = Bills.AsEnumerable().First(x => x.Id == m);
-
-                LoadBill(bill);
-            }
         }
     }
 }

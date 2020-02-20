@@ -8,13 +8,13 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Name="MainStackPanel">
         <Label Style="{StaticResource H2}">Add Bill</Label>
-        <Label>Start</Label>
+        <Label Style="{StaticResource LabelInput}">Start</Label>
         <DatePicker Name="DpStart" SelectedDate="{Binding Path=Start, Mode=TwoWay}"/>
-        <Label>End</Label>
+        <Label Style="{StaticResource LabelInput}">End</Label>
         <DatePicker Name="DpEnd" SelectedDate="{Binding Path=End, Mode=TwoWay}"/>
-        <StackPanel Orientation="Horizontal">
-            <Button Name="BtnSave" Click="BtnSave_Click">Save</Button>
-            <Button Name="BtnCancel" Click="BtnCancel_Click">Cancel</Button>
+        <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
+            <Button Name="BtnSave" Click="BtnSave_Click" Style="{StaticResource HButtons}">Save</Button>
+            <Button Name="BtnCancel" Click="BtnCancel_Click" Style="{StaticResource HButtons}">Cancel</Button>
         </StackPanel>
     </StackPanel>
 </UserControl>

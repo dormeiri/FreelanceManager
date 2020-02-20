@@ -1,7 +1,7 @@
 ﻿using FreelanceManager.Desktop.Controllers;
 using FreelanceManager.Desktop.Models;
-using FreelanceManager.Desktop.View.WorkTimeRanges;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FreelanceManager.Desktop.View.WorkTasks
@@ -13,67 +13,86 @@ namespace FreelanceManager.Desktop.View.WorkTasks
     {
         public Action Done;
 
-        private readonly int _projectId;
-        private readonly WorkTimeRangesController _workTimeRangesController;
-        private readonly WorkTasksController _workTasksController;
+        private readonly WorkTasksController _controller;
 
         public WorkTasksView()
         {
             InitializeComponent();
         }
 
-        public WorkTasksView(WorkTasksController controller, WorkTimeRangesController workTimeRangeController, int projectId) : this()
+        public WorkTasksView(WorkTasksController workTasksController) : this()
         {
-            _projectId = projectId;
-            _workTimeRangesController = workTimeRangeController;
-            _workTasksController = controller;
+            _controller = workTasksController;
 
-            _workTasksController.ListChanged += ListChanged;
+            _controller.ListChanged += ListChanged;
+            _controller.RelatedListChanged += RelatedListChanged;
 
             ListChanged();
+
+            TbFilter.Focus();
         }
 
         private void ListChanged()
         {
-            MainListView.ItemsSource = _workTasksController.Get(_projectId);
+            MainListView.ItemsSource = _controller.Get();
         }
 
-        private void BtnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void RelatedListChanged()
         {
-            var uc = new AddWorkTask(_workTasksController, _projectId);
-            uc.Done += ReleaseFrame;
+            LabelHours.Content = _controller.GetTotalHours();
+        }
+
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            var uc = _controller.GetAddView();
+            uc.Done += SetMainFrame;
 
             MainFrame.Content = uc;
         }
 
-        private void BtnRemove_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
             var selected = GetSelected();
 
             if (selected != null)
             {
-                _workTasksController.Remove(selected.Id);
+                _controller.Remove(selected.Id);
             }
-        }
-
-
-        private void ReleaseFrame()
-        {
-            MainFrame.Content = null;
         }
 
         private void MainListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            SetMainFrame();
+        }
+
+        private void SetMainFrame()
+        {
             var selected = GetSelected();
-            if (selected != null)
-            {
-                MainFrame.Content = new WorkTimeRangesView(_workTimeRangesController, selected.Id);
-            }
+
+            MainFrame.Content = selected == null
+                ? null
+                : _controller.GetWorkTimeRangesView(selected.Id);
         }
 
         private WorkTaskDto GetSelected()
         {
             return MainListView.SelectedItem != null ? (WorkTaskDto)MainListView.SelectedItem : null;
+        }
+
+        private void BtnExport_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.ExportReport();
+        }
+
+        private void TbFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MainListView.Items.Filter = IsMatchFilter;
+        }
+
+        private bool IsMatchFilter(object x)
+        {
+            return string.IsNullOrWhiteSpace(TbFilter.Text) 
+                || ((WorkTaskDto)x).Name.ToLower().StartsWith(TbFilter.Text.ToLower());
         }
     }
 }

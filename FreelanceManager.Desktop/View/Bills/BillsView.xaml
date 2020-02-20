@@ -4,16 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FreelanceManager.Desktop.View.Bills"
+             xmlns:converters="clr-namespace:FreelanceManager.Desktop.View.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
-        <Label Style="{StaticResource H1}">Bills</Label>
-        <ListView Name="MainListView"></ListView>
-        <StackPanel Orientation="Horizontal">
-            <Button Name="BtnAdd" Click="BtnAdd_Click">Add</Button>
-            <Button Name="BtnRemove" Click="BtnRemove_Click">Remove</Button>
-            <Button Name="BtnLoad" Click="BtnLoad_Click">Load</Button>
+    <UserControl.Resources>
+        <converters:IsSelectedConverter x:Key="IsSelectedConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <Label Style="{StaticResource H1}">Bills</Label>
+            <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
+                <Button Style="{StaticResource HButtons}" Name="BtnAdd" Click="BtnAdd_Click">Add</Button>
+                <Button Style="{StaticResource HButtons}" Name="BtnRemove" Click="BtnRemove_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}">Remove</Button>
+                <Button Style="{StaticResource HButtons}" Name="BtnLoad" Click="BtnLoad_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}">Load</Button>
+            </StackPanel>
+            <ListView Margin="{StaticResource VMargin}" Name="MainListView">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+                        <GridViewColumn Header="Start" DisplayMemberBinding="{Binding Start}"/>
+                        <GridViewColumn Header="End" DisplayMemberBinding="{Binding End}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </StackPanel>
-        <Frame Name="MainFrame"></Frame>
-    </StackPanel>
+        <Frame Grid.Column="2" Name="MainFrame"/>
+    </Grid>
 </UserControl>
