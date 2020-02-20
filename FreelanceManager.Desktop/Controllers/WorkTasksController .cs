@@ -7,7 +7,6 @@ using FreelanceManager.Reports;
 using Statistics;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace FreelanceManager.Desktop.Controllers
@@ -82,6 +81,11 @@ namespace FreelanceManager.Desktop.Controllers
             report.ToCsv(_ctx.Directory);
 
             Process.Start(new ProcessStartInfo(_ctx.Directory) { UseShellExecute = true });
+        }
+
+        public WorkProjectDto GetWorkProjectContext()
+        {
+            return new WorkProjectDto(_ctx.WorkProjects.Find(_projectId));
         }
     }
 }

@@ -20,9 +20,11 @@ namespace FreelanceManager.Desktop.View.WorkTasks
             InitializeComponent();
         }
 
-        public WorkTasksView(WorkTasksController workTasksController) : this()
+        public WorkTasksView(WorkTasksController controller) : this()
         {
-            _controller = workTasksController;
+            _controller = controller;
+
+            LabelProject.Content = _controller.GetWorkProjectContext().Name;
 
             _controller.ListChanged += ListChanged;
             _controller.RelatedListChanged += RelatedListChanged;

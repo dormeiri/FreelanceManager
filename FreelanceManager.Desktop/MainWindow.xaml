@@ -12,24 +12,16 @@
     <Window.Resources>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <DockPanel LastChildFill="False" Grid.Column="0" Background="{StaticResource Color2Dark}">
-            <StackPanel DockPanel.Dock="Top">
-                <uc:ButtonSidebar x:Name="BtnProjects" Text="Projects"/>
-                <uc:ButtonSidebar x:Name="BtnBills" Text="Bills"/>
-            </StackPanel>
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                <Label>Bill:</Label>
-                <Label Name="LabelLoadedBill"></Label>
-            </StackPanel>
-        </DockPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="2">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="30,0,0,0">
             <Frame Name="FrameOpt"/>
         </ScrollViewer>
+        <Border Name="Sidebar" HorizontalAlignment="Left" BorderBrush="{StaticResource Color4Dark}" MouseEnter="Sidebar_MouseEnter" MouseLeave="Sidebar_MouseLeave">
+            <DockPanel LastChildFill="False" Background="{StaticResource Color2Dark}">
+                <StackPanel DockPanel.Dock="Top">
+                    <uc:ButtonSidebar x:Name="BtnProjects" Text="Projects"/>
+                    <uc:ButtonSidebar x:Name="BtnBills" Text="Bills"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
     </Grid>
 </Window>

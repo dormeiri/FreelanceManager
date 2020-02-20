@@ -9,8 +9,14 @@ namespace FreelanceManager.Desktop.View.UserControls
     /// </summary>
     public partial class ButtonSidebar : UserControl
     {
-        public Action ClickAction;
-        public Action<ButtonSidebar> Click;
+        public Action Click;
+
+        public static readonly DependencyProperty TextVisibilityProperty = DependencyProperty.Register("TextVisibility", typeof(Visibility), typeof(ButtonSidebar), new PropertyMetadata(Visibility.Visible));
+        public object TextVisibility
+        {
+            get { return (Visibility)GetValue(TextVisibilityProperty); }
+            set { SetValue(TextVisibilityProperty, value); }
+        }
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(ButtonSidebar), new PropertyMetadata(""));
         public object Text
@@ -24,6 +30,8 @@ namespace FreelanceManager.Desktop.View.UserControls
         {
             InitializeComponent();
             DataContext = this;
+
+            Toggle(false);
         }
 
         public void Toggle(bool value)
@@ -34,10 +42,9 @@ namespace FreelanceManager.Desktop.View.UserControls
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            Click?.Invoke(this);
+            Click?.Invoke();
 
             Toggle(true);
-            ClickAction?.Invoke();
         }
     }
 }

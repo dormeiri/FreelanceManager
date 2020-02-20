@@ -169,7 +169,6 @@
         <!--Button-->
 
         <Style x:Key="BaseButton" TargetType="Button" BasedOn="{StaticResource Base}">
-            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Background" Value="{StaticResource Color2Dark}"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -198,7 +197,7 @@
         <Style TargetType="Button" BasedOn="{StaticResource BaseButton}"/>
 
         <Style x:Key="SidebarButtonIn" TargetType="Button" BasedOn="{StaticResource BaseButton}">
-            <Setter Property="Background" Value="{StaticResource Color2}"/>
+            <Setter Property="Background" Value="{StaticResource Color4}"/>
         </Style>
 
         <Style x:Key="SidebarButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">

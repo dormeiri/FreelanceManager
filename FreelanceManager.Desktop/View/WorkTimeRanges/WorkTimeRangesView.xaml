@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <Label Style="{StaticResource H1}">Time Ranges</Label>
+            <Label Name="LabelTask" Style="{StaticResource H1}">Time Ranges</Label>
             <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
                 <Button Name="BtnAdd" Click="BtnAdd_Click" Style="{StaticResource HButtons}">Add</Button>
                 <Button Name="BtnRemove" Click="BtnRemove_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}" Style="{StaticResource HButtons}">Remove</Button>

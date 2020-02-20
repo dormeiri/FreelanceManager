@@ -6,6 +6,7 @@ using FreelanceManager.Desktop.View.WorkProjects;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace FreelanceManager.Desktop
 {
@@ -14,6 +15,8 @@ namespace FreelanceManager.Desktop
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int HIDDEN_SIDEBAR_SIZE = 20;
+
         private readonly Dictionary<ButtonSidebar, Action> sidebarButtons;
 
         private readonly Context _ctx;
@@ -22,12 +25,16 @@ namespace FreelanceManager.Desktop
         {
             InitializeComponent();
 
-            sidebarButtons = GetSidebarButtons();
-
             _ctx = ContextProducer.Ctx.Value;
 
-            OpenProjects();
+            sidebarButtons = GetSidebarButtons();
+            HideSidebar();
+
             BillLoaded();
+
+            OpenProjects();
+            BtnProjects.Toggle(true);
+
 
         }
 
@@ -41,16 +48,16 @@ namespace FreelanceManager.Desktop
 
             foreach (var b in result)
             {
-                b.Key.Click += SidebarButtonClicked;
-                b.Key.ClickAction = b.Value;
+                b.Key.Click += ToggleSidebarButtonsOff;
+                b.Key.Click += b.Value;
             }
 
             return result;
         }
 
-        private void SidebarButtonClicked(ButtonSidebar obj)
+        private void ToggleSidebarButtonsOff()
         {
-            foreach(var b in sidebarButtons.Keys)
+            foreach (var b in sidebarButtons.Keys)
             {
                 b.Toggle(false);
             }
@@ -73,7 +80,37 @@ namespace FreelanceManager.Desktop
 
         private void BillLoaded()
         {
-            LabelLoadedBill.Content = _ctx.Bill?.Id;
+            BtnBills.Text = $"Bills ({_ctx.Bill?.Id})";
+        }
+
+        private void Sidebar_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            ShowSidebar();
+        }
+
+        private void Sidebar_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            HideSidebar();
+        }
+
+        private void ShowSidebar()
+        {
+            Sidebar.Width = double.NaN;
+            SetSidebarTextVisibility(Visibility.Visible);
+        }
+
+        private void HideSidebar()
+        {
+            Sidebar.Width = HIDDEN_SIDEBAR_SIZE;
+            SetSidebarTextVisibility(Visibility.Hidden);
+        }
+
+        private void SetSidebarTextVisibility(Visibility visibility)
+        {
+            foreach (var b in sidebarButtons)
+            {
+                b.Key.TextVisibility = visibility;
+            }
         }
     }
 }

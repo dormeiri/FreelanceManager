@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <Label Style="{StaticResource H1}">Tasks</Label>
+            <Label Name="LabelProject" Style="{StaticResource H1}">Tasks</Label>
             <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
                 <Button Name="BtnExport" Click="BtnExport_Click" Style="{StaticResource HButtons}">Export</Button>
                 <Button Name="BtnAdd" Click="BtnAdd_Click" Style="{StaticResource HButtons}">Add</Button>

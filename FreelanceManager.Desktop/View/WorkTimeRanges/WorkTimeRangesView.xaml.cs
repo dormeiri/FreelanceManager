@@ -11,7 +11,7 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
     public partial class WorkTimeRangesView : UserControl
     {
         public Action Done;
-        private readonly WorkTimeRangesController _workTimeRangesController;
+        private readonly WorkTimeRangesController _controller;
 
         public WorkTimeRangesView()
         {
@@ -20,22 +20,24 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
 
         public WorkTimeRangesView(WorkTimeRangesController workTimeRangesController) : this()
         {
-            _workTimeRangesController = workTimeRangesController;
+            _controller = workTimeRangesController;
 
-            _workTimeRangesController.ListChanged += ListChanged;
+            LabelTask.Content = _controller.GetWorkTaskContext().Name;
+
+            _controller.ListChanged += ListChanged;
 
             ListChanged();
         }
 
         private void ListChanged()
         {
-            MainListView.ItemsSource = _workTimeRangesController.Get();
-            LabelHours.Content = _workTimeRangesController.GetTotalHours();
+            MainListView.ItemsSource = _controller.Get();
+            LabelHours.Content = _controller.GetTotalHours();
         }
 
         private void BtnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var uc = _workTimeRangesController.GetAddView();
+            var uc = _controller.GetAddView();
             uc.Done += ReleaseFrame;
 
             MainFrame.Content = uc;
@@ -46,7 +48,7 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
             var selected = GetSelected();
             if (selected != null)
             {
-                _workTimeRangesController.Remove(selected.Id);
+                _controller.Remove(selected.Id);
             }
         }
 

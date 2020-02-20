@@ -11,13 +11,13 @@ namespace FreelanceManager.Desktop.Controllers
 {
     public class WorkTimeRangesController : Controller
     {
-        public int TaskId { get; private set; }
+        private readonly int _taskId;
 
         public event ListChangedEventHandler ListChanged;
 
         public WorkTimeRangesController(Context ctx, int taskId) : base(ctx)
         {
-            TaskId = taskId;
+            _taskId = taskId;
         }
 
         public WorkTimeRangeAddView GetAddView()
@@ -29,7 +29,7 @@ namespace FreelanceManager.Desktop.Controllers
             {
                 Start = now.AddHours(-1),
                 End = now,
-                WorkTaskId = TaskId
+                WorkTaskId = _taskId
             };
 
             return new WorkTimeRangeAddView(this, entity);
@@ -38,7 +38,7 @@ namespace FreelanceManager.Desktop.Controllers
         public ICollection<WorkTimeRangeDto> Get()
         {
             return _ctx.WorkTimeRanges?.AsEnumerable()
-                .Where(x => x.WorkTaskId == TaskId)
+                .Where(x => x.WorkTaskId == _taskId)
                 .Select(x => new WorkTimeRangeDto(x))
                 .ToList();
         }
@@ -63,7 +63,12 @@ namespace FreelanceManager.Desktop.Controllers
 
         public double GetTotalHours()
         {
-            return new StatisticsClient(_ctx).GetTotalHoursOfTask(TaskId);
+            return new StatisticsClient(_ctx).GetTotalHoursOfTask(_taskId);
+        }
+
+        public WorkTaskDto GetWorkTaskContext()
+        {
+            return new WorkTaskDto(_ctx.WorkTasks.Find(_taskId));
         }
     }
 }
