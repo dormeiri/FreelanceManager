@@ -2,14 +2,16 @@
 using DataAccess.Models;
 using FreelanceManager.Desktop.Models;
 using FreelanceManager.Desktop.View.Bills;
+using FreelanceManager.Reports;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 namespace FreelanceManager.Desktop.Controllers
 {
-    public class BillsController : Controller
+    public class BillsController : Controller, IDataSetController
     {
         public delegate void BillLoadedEventHandler();
 
@@ -68,6 +70,14 @@ namespace FreelanceManager.Desktop.Controllers
             _ctx.LoadBill(id);
 
             BillLoaded?.Invoke();
+        }
+
+        public void ExportReport()
+        {
+            var report = new BillFullReportsFactory(_ctx).Produce();
+            report.ToCsv(_ctx.Directory);
+
+            Process.Start(new ProcessStartInfo(_ctx.Directory) { UseShellExecute = true });
         }
     }
 }

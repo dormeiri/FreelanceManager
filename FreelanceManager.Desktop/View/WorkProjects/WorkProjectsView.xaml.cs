@@ -2,8 +2,10 @@
 using FreelanceManager.Desktop.Models;
 using FreelanceManager.Desktop.View.WorkTasks;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace FreelanceManager.Desktop.View.WorkProjects
 {
@@ -27,7 +29,7 @@ namespace FreelanceManager.Desktop.View.WorkProjects
 
             _controller.ListChanged += ListChanged;
             _controller.RelatedListChanged += RelatedListChanged;
-            MainFrame.ContentRendered += (s,o) => _controller.TriggerBlazeAddedEvent();
+            MainFrame.ContentRendered += (s, o) => _controller.TriggerBlazeAddedEvent();
 
             ListChanged();
         }
@@ -41,6 +43,12 @@ namespace FreelanceManager.Desktop.View.WorkProjects
         private void RelatedListChanged()
         {
             LabelHours.Content = _controller.GetTotalHours();
+            if (MainListView.ItemsSource is IEnumerable<WorkProjectDto> s)
+            {
+                _controller.UpdateStatistics(s);
+            }
+
+            CollectionViewSource.GetDefaultView(MainListView.ItemsSource).Refresh();
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
@@ -53,7 +61,11 @@ namespace FreelanceManager.Desktop.View.WorkProjects
 
         private void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
-            _controller.Remove(GetSelected().Id);
+            var selected = GetSelected();
+            if (selected != null)
+            {
+                _controller.ShowRemoveDialog(_controller, selected.Id, selected.Name);
+            }
         }
 
         private void MainListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

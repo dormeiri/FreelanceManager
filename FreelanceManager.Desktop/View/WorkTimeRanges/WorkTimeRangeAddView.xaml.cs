@@ -1,6 +1,7 @@
 ﻿using FreelanceManager.Desktop.Controllers;
 using FreelanceManager.Desktop.Models;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -41,6 +42,11 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             Done.Invoke();
+        }
+
+        private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = !e.Text.All(c => char.IsDigit(c));
         }
     }
 }

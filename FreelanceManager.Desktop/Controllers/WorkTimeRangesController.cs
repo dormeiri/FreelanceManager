@@ -2,14 +2,16 @@
 using DataAccess.Models;
 using FreelanceManager.Desktop.Models;
 using FreelanceManager.Desktop.View.WorkTimeRanges;
+using FreelanceManager.Reports;
 using Statistics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace FreelanceManager.Desktop.Controllers
 {
-    public class WorkTimeRangesController : Controller
+    public class WorkTimeRangesController : Controller, IDataSetController
     {
         private readonly int _taskId;
 
@@ -69,6 +71,14 @@ namespace FreelanceManager.Desktop.Controllers
         public WorkTaskDto GetWorkTaskContext()
         {
             return new WorkTaskDto(_ctx.WorkTasks.Find(_taskId));
+        }
+
+        public void ExportReport()
+        {
+            var report = new WorkTimeRangesReportsFactory(_ctx, _taskId).Produce();
+            report.ToCsv(_ctx.Directory);
+
+            Process.Start(new ProcessStartInfo(_ctx.Directory) { UseShellExecute = true });
         }
     }
 }

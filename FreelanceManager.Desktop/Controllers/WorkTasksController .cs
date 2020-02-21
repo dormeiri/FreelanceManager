@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace FreelanceManager.Desktop.Controllers
 {
-    public class WorkTasksController : Controller
+    public class WorkTasksController : Controller, IDataSetController
     {
         private readonly int _projectId;
 
@@ -28,16 +28,18 @@ namespace FreelanceManager.Desktop.Controllers
             var controller = new WorkTimeRangesController(_ctx, id);
 
             controller.BlazeAdded += TriggerBlazeAddedEvent;
+            controller.RemoveDialogRequested += (s, o, n) => ShowRemoveDialog(s, o, n);
             controller.ListChanged += () => RelatedListChanged?.Invoke();
 
             return new WorkTimeRangesView(controller);
         }
 
-        public WorkTaskAddView GetAddView()
+        public WorkTaskAddView GetAddView(string name = null)
         {
             var entity = new WorkTaskDto()
             {
-                WorkProjectId = _projectId
+                WorkProjectId = _projectId,
+                Name = name
             };
 
             return new WorkTaskAddView(this, entity);
@@ -87,6 +89,16 @@ namespace FreelanceManager.Desktop.Controllers
         public WorkProjectDto GetWorkProjectContext()
         {
             return new WorkProjectDto(_ctx.WorkProjects.Find(_projectId));
+        }
+
+        public void UpdateStatistics(IEnumerable<WorkTaskDto> source)
+        {
+            var totalHours = new StatisticsClient(_ctx).GetTotalHoursByTasks();
+
+            foreach (var item in source)
+            {
+                item.TotalHours = totalHours[item.Id];
+            }
         }
     }
 }

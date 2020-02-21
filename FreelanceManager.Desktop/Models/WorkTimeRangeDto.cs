@@ -23,7 +23,6 @@ namespace FreelanceManager.Desktop.Models
                 Start = value.Date + time;
             }
         }
-
         public int StartHour
         {
             get
@@ -35,7 +34,17 @@ namespace FreelanceManager.Desktop.Models
                 Start = Start.AddHours(value - Start.Hour);
             }
         }
-
+        public int StartMinute
+        {
+            get
+            {
+                return Start.Minute;
+            }
+            set
+            {
+                Start = Start.AddMinutes(value - Start.Minute);
+            }
+        }
         public DateTime EndDate
         {
             get
@@ -48,7 +57,6 @@ namespace FreelanceManager.Desktop.Models
                 End = value.Date + time;
             }
         }
-
         public int EndHour
         {
             get
@@ -58,6 +66,17 @@ namespace FreelanceManager.Desktop.Models
             set
             {
                 End = End.AddHours(value - End.Hour);
+            }
+        }
+        public int EndMinute
+        {
+            get
+            {
+                return End.Minute;
+            }
+            set
+            {
+                End = End.AddMinutes(value - End.Minute);
             }
         }
 

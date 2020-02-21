@@ -19,8 +19,9 @@
         <StackPanel Grid.Column="0">
             <Label Style="{StaticResource H1}">Bills</Label>
             <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
-                <Button Style="{StaticResource HButtons}" Name="BtnAdd" Click="BtnAdd_Click">Add</Button>
-                <Button Style="{StaticResource HButtons}" Name="BtnRemove" Click="BtnRemove_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}">Remove</Button>
+                <Button Style="{StaticResource HButtons}" Name="BtnAdd" Click="BtnAdd_Click">+</Button>
+                <Button Style="{StaticResource HButtons}" Name="BtnRemove" Click="BtnRemove_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}">-</Button>
+                <Button Style="{StaticResource HButtons}" Name="BtnExport" Click="BtnExport_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}">Export</Button>
                 <Button Style="{StaticResource HButtons}" Name="BtnLoad" Click="BtnLoad_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}">Load</Button>
             </StackPanel>
             <ListView Margin="{StaticResource VMargin}" Name="MainListView">

@@ -24,5 +24,6 @@
                 <uc:ButtonSidebar x:Name="BtnBills" Text="Bills"/>
             </StackPanel>
         </Border>
+        <Popup StaysOpen="False" Name="MainPopup" PopupAnimation="Fade" AllowsTransparency="True" Placement="Center"></Popup>
     </Grid>
 </Window>

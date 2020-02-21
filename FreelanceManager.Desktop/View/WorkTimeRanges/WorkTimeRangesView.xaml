@@ -8,6 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:IsSelectedConverter x:Key="IsSelectedConverter"/>
+        <converters:ShortDateTimeConverter x:Key="ShortDateTimeConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -18,16 +19,17 @@
         <StackPanel Grid.Column="0">
             <Label Name="LabelTask" Style="{StaticResource H1}">Time Ranges</Label>
             <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
-                <Button Name="BtnBack" Style="{StaticResource HButtons}" Click="BtnBack_Click">&lt;</Button>
-                <Button Name="BtnAdd" Click="BtnAdd_Click" Style="{StaticResource HButtons}">Add</Button>
-                <Button Name="BtnRemove" Click="BtnRemove_Click" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}" Style="{StaticResource HButtons}">Remove</Button>
+                <Button Name="BtnBack" Click="BtnBack_Click" Style="{StaticResource HButtons}">&lt;</Button>
+                <Button Name="BtnAdd" Click="BtnAdd_Click" Style="{StaticResource HButtons}">+</Button>
+                <Button Name="BtnRemove" Click="BtnRemove_Click" Style="{StaticResource HButtons}" IsEnabled="{Binding ElementName=MainListView, Path=SelectedIndex, Converter={StaticResource IsSelectedConverter}}">-</Button>
+                <Button Name="BtnExport" Click="BtnExport_Click" Style="{StaticResource HButtons}">Export</Button>
             </StackPanel>
             <ListView Margin="{StaticResource VMargin}" Name="MainListView">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
-                        <GridViewColumn Header="Start" DisplayMemberBinding="{Binding Start}"/>
-                        <GridViewColumn Header="End" DisplayMemberBinding="{Binding End}"/>
+                        <GridViewColumn Header="Start" DisplayMemberBinding="{Binding Start, Converter={StaticResource ShortDateTimeConverter}}"/>
+                        <GridViewColumn Header="End" DisplayMemberBinding="{Binding End, Converter={StaticResource ShortDateTimeConverter}}"/>
                         <GridViewColumn Header="Total Hours" DisplayMemberBinding="{Binding TotalHours}"/>
                     </GridView>
                 </ListView.View>

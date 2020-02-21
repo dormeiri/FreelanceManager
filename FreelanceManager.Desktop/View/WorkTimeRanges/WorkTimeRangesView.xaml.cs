@@ -46,10 +46,11 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
 
         private void BtnRemove_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+
             var selected = GetSelected();
             if (selected != null)
             {
-                _controller.Remove(selected.Id);
+                _controller.ShowRemoveDialog(_controller, selected.Id, $"{selected.End} - {selected.Start}");
             }
         }
 
@@ -66,6 +67,11 @@ namespace FreelanceManager.Desktop.View.WorkTimeRanges
         private void BtnBack_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             Done?.Invoke();
+        }
+
+        private void BtnExport_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _controller.ExportReport();
         }
     }
 }

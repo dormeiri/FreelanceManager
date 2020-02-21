@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace FreelanceManager.Desktop.Controllers
 {
-    public class WorkProjectsController : Controller
+    public class WorkProjectsController : Controller, IDataSetController
     {
         public event ListChangedEventHandler ListChanged;
         public event ListChangedEventHandler RelatedListChanged;
@@ -23,6 +23,7 @@ namespace FreelanceManager.Desktop.Controllers
             var controller = new WorkTasksController(_ctx, id);
 
             controller.BlazeAdded += TriggerBlazeAddedEvent;
+            controller.RemoveDialogRequested += (s, o, n) => ShowRemoveDialog(s, o, n);
             controller.ListChanged += () => RelatedListChanged?.Invoke();
             controller.RelatedListChanged += () => RelatedListChanged?.Invoke();
 
@@ -74,6 +75,16 @@ namespace FreelanceManager.Desktop.Controllers
             report.ToCsv(_ctx.Directory);
 
             Process.Start(new ProcessStartInfo(_ctx.Directory) { UseShellExecute = true });
+        }
+
+        public void UpdateStatistics(IEnumerable<WorkProjectDto> source)
+        {
+            var totalHours = new StatisticsClient(_ctx).GetTotalHoursByProject();
+
+            foreach (var item in source)
+            {
+                item.TotalHours = totalHours[item.Id];
+            }
         }
     }
 }

@@ -79,6 +79,7 @@
 
 
         <!--Date Picker-->
+        
         <Style TargetType="DatePicker">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -95,10 +96,11 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="SelectionBrush" Value="{StaticResource Color4}"/>
             <Setter Property="CaretBrush" Value="{StaticResource Color1}"/>
+            <Setter Property="MinWidth" Value="100"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Padding="5" MinWidth="100">
+                        <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Padding="5" MinWidth="{TemplateBinding MinWidth}">
                             <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -115,6 +117,7 @@
 
         <Style x:Key="TextBoxTimePart" TargetType="TextBox" BasedOn="{StaticResource BaseTextBox}">
             <Setter Property="MinWidth" Value="40"/>
+            <Setter Property="MaxLength" Value="2"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
 
@@ -188,7 +191,35 @@
                             </Trigger>
 
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{StaticResource Color4}" />
+                                <Setter Property="Background" Value="{StaticResource Color4Dark}" />
+                                <Setter Property="Opacity" Value="0.7"/>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource Base}">
+            <Setter Property="Background" Value="{StaticResource Color2Dark}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border SnapsToDevicePixels="True" BorderThickness="0" Background="{TemplateBinding Background}" Padding="10,5">
+                            <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Color5}" />
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Color5}" />
+                                <Setter Property="Opacity" Value="0.7"/>
                             </Trigger>
 
                             <Trigger Property="IsEnabled" Value="False">

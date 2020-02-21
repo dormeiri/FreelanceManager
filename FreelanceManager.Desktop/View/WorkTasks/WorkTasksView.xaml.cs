@@ -2,8 +2,10 @@
 using FreelanceManager.Desktop.Models;
 using FreelanceManager.Desktop.View.WorkTimeRanges;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace FreelanceManager.Desktop.View.WorkTasks
 {
@@ -39,16 +41,24 @@ namespace FreelanceManager.Desktop.View.WorkTasks
         private void ListChanged()
         {
             MainListView.ItemsSource = _controller.Get();
+            RelatedListChanged();
         }
 
         private void RelatedListChanged()
         {
             LabelHours.Content = _controller.GetTotalHours();
+
+            if(MainListView.ItemsSource is IEnumerable<WorkTaskDto> s)
+            {
+                _controller.UpdateStatistics(s);
+            }
+
+            CollectionViewSource.GetDefaultView(MainListView.ItemsSource).Refresh();
         }
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            var uc = _controller.GetAddView();
+            var uc = _controller.GetAddView(TbFilter.Text);
             uc.Done += SetMainFrame;
 
             MainFrame.Content = uc;
@@ -57,11 +67,20 @@ namespace FreelanceManager.Desktop.View.WorkTasks
         private void BtnRemove_Click(object sender, RoutedEventArgs e)
         {
             var selected = GetSelected();
-
             if (selected != null)
             {
-                _controller.Remove(selected.Id);
+                _controller.ShowRemoveDialog(_controller, selected.Id, selected.Name);
             }
+        }
+
+        private void BtnExport_Click(object sender, RoutedEventArgs e)
+        {
+            _controller.ExportReport();
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            Done?.Invoke();
         }
 
         private void MainListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,11 +112,6 @@ namespace FreelanceManager.Desktop.View.WorkTasks
             return MainListView.SelectedItem != null ? (WorkTaskDto)MainListView.SelectedItem : null;
         }
 
-        private void BtnExport_Click(object sender, RoutedEventArgs e)
-        {
-            _controller.ExportReport();
-        }
-
         private void TbFilter_TextChanged(object sender, TextChangedEventArgs e)
         {
             MainListView.Items.Filter = IsMatchFilter;
@@ -107,11 +121,6 @@ namespace FreelanceManager.Desktop.View.WorkTasks
         {
             return string.IsNullOrWhiteSpace(TbFilter.Text) 
                 || ((WorkTaskDto)x).Name.ToLower().StartsWith(TbFilter.Text.ToLower());
-        }
-
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
-        {
-            Done?.Invoke();
         }
     }
 }

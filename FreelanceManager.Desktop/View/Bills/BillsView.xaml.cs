@@ -43,7 +43,11 @@ namespace FreelanceManager.Desktop.View.Bills
 
         private void BtnRemove_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _controller.Remove(GetSelected().Id);
+            var selected = GetSelected();
+            if (selected != null)
+            {
+                _controller.ShowRemoveDialog(_controller, selected.Id, $"{selected.Start.ToString("d")} - {selected.Start.ToString("d")}");
+            }
         }
 
 
@@ -60,6 +64,11 @@ namespace FreelanceManager.Desktop.View.Bills
         private void ReleaseFrame()
         {
             MainFrame.Content = null;
+        }
+
+        private void BtnExport_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _controller.ExportReport();
         }
     }
 }

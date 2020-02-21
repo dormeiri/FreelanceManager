@@ -69,24 +69,39 @@ namespace FreelanceManager.Desktop
         private void OpenProjects()
         {
             //TODO: Move to controller
-            
-            var projectsController = new WorkProjectsController(_ctx);
 
-            var uc = new WorkProjectsView(projectsController);
+            var controller = new WorkProjectsController(_ctx);
 
-            projectsController.BlazeAdded += () => MainScrollViewer.ScrollToRightEnd();
+            var uc = new WorkProjectsView(controller);
+
+            controller.BlazeAdded += () => MainScrollViewer.ScrollToRightEnd();
+            controller.RemoveDialogRequested += ShowRemoveDialog;
 
             FrameOpt.Content = uc;
+        }
+
+        private void ShowRemoveDialog(IDataSetController s, int o, string n)
+        {
+            MainPopup.Child = new RemoveDialog(
+                n,
+                () =>
+                {
+                    s.Remove(o);
+                    MainPopup.IsOpen = false;
+                },
+                () => MainPopup.IsOpen = false);
+            MainPopup.IsOpen = true;
         }
 
         private void OpenBills()
         {
             //TOOD: Move to controller
 
-            var billsController = new BillsController(_ctx);
-            billsController.BillLoaded += BillLoaded;
+            var controller = new BillsController(_ctx);
+            controller.BillLoaded += BillLoaded;
+            controller.RemoveDialogRequested += ShowRemoveDialog;
 
-            FrameOpt.Content = new BillsView(billsController);
+            FrameOpt.Content = new BillsView(controller);
         }
 
         private void BillLoaded()

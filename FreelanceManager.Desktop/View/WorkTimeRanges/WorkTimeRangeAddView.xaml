@@ -11,13 +11,17 @@
         <TextBox IsEnabled="False" Name="TbTaskId" Text="{Binding Path=WorkTaskId, Mode=TwoWay}"/>
         <Label Style="{StaticResource LabelInput}">Start</Label>
         <StackPanel Orientation="Horizontal">
-            <DatePicker Name="DpStart" SelectedDate="{Binding Path=StartDate, Mode=TwoWay}"/>
-            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=StartHour, Mode=TwoWay}"/>
+            <DatePicker Margin="{StaticResource HMargin}" Name="DpStart" SelectedDate="{Binding Path=StartDate, Mode=TwoWay}"/>
+            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=StartHour, Mode=TwoWay}" PreviewTextInput="TextBox_PreviewTextInput"/>
+            <Label>:</Label>
+            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=StartMinute, Mode=TwoWay}" PreviewTextInput="TextBox_PreviewTextInput"/>
         </StackPanel>
         <Label Style="{StaticResource LabelInput}">End</Label>
         <StackPanel Orientation="Horizontal">
-            <DatePicker SelectedDate="{Binding Path=EndDate, Mode=TwoWay}"/>
-            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=EndHour, Mode=TwoWay}"/>
+            <DatePicker Margin="{StaticResource HMargin}" SelectedDate="{Binding Path=EndDate, Mode=TwoWay}"/>
+            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=EndHour, Mode=TwoWay}" PreviewTextInput="TextBox_PreviewTextInput"/>
+            <Label>:</Label>
+            <TextBox Style="{StaticResource TextBoxTimePart}" Text="{Binding Path=EndMinute, Mode=TwoWay}" PreviewTextInput="TextBox_PreviewTextInput"/>
         </StackPanel>
         <StackPanel Margin="{StaticResource VMargin}" Orientation="Horizontal">
             <Button Name="BtnSave" Click="BtnSave_Click" Style="{StaticResource HButtons}">Save</Button>
