@@ -6,8 +6,7 @@
         xmlns:uc="clr-namespace:FreelanceManager.Desktop.View.UserControls"
         mc:Ignorable="d"
         Title="Freelancer Manager" 
-        Width="800"
-        Height="400"
+        WindowState="Maximized"
         Background="{StaticResource Color2}">
     <Window.Resources>
     </Window.Resources>
